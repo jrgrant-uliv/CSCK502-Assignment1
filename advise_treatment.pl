@@ -42,7 +42,7 @@ assess_risk(Patient)    :- has_age_risk(Patient);
                         has_hypertension_risk(Patient);
                         has_cardiovascular_risk(Patient);
                         has_crd_risk(Patient);
-                        has_cancer(Patient).
+                        has_cancer_risk(Patient).
 
 %% Symptom Rules
 
