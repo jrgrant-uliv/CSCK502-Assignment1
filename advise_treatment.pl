@@ -99,11 +99,11 @@ advise_mild_symptoms(Patient)   :- has_mild_symptoms(Patient),
                                 ).
 
 %%Advice predecate - if no symptoms are reported
-advise_no_symptoms(Patient)   :- assess_risk(Patient), 
-                                    format(atom(Advice), '~w does not present any symptoms but presents significant risk factors', Patient),
-                                    (
-                                        write(Advice)
-                                    );
+advise_no_symptoms(Patient)   :- assess_risk(Patient),
+                                format(atom(Advice), '~w does not present any symptoms but presents significant risk factors.', Patient),
+                                (
+                                    write(Advice)
+                                );
                                 format(atom(Advice), '~w does not present any symptoms.', Patient),
                                 (
                                     write(Advice)
