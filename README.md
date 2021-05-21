@@ -26,6 +26,7 @@ or
 ```
 advise_action("Jane").
 ```
+or 
 ```
 advise_action("Archibald"). 
 ```
