@@ -21,7 +21,7 @@ presents_symptom(Patient, Question)     :- format(Question, Patient),
 has_age_risk(Patient)   :- format('How old is ~w? ', Patient),
                         read(Age),
                         nl,
-                        Age = 69.
+                        Age >= 70.
 
 has_gender_risk(Patient)  :- format('What gender is ~w?', Patient),
                                     write(' [m/f] '),
@@ -67,18 +67,13 @@ has_anosmia(Patient)              :- presents_symptom(Patient, 'Is ~w experienci
 has_runny_nose(Patient)           :- presents_symptom(Patient, 'Does ~w have a runny nose?').
 
 
+%%Determine if the patient dispays at least one of the severe symptoms
 has_severe_symptoms(Patient)       :- has_chest_pain(Patient);
                                     has_trouble_breathing(Patient);
                                     has_loss_of_movement(Patient);
                                     has_high_temperature(Patient).
 
-advise_severe_symptoms(Patient)     :- has_severe_symptoms(Patient),
-                                    format(atom(Advice), '~w has severe symptoms and should consult a doctor immediately!', Patient),
-                                    (
-                                        write(Advice)
-                                    ).
-                            
-
+%%Determine if the patient dispays at least one of the severe symptoms
 has_mild_symptoms(Patient)  :-  has_dry_cough(Patient);
                             is_tired(Patient);
                             has_aches_pains(Patient);
@@ -89,24 +84,35 @@ has_mild_symptoms(Patient)  :-  has_dry_cough(Patient);
                             has_anosmia(Patient);
                             has_runny_nose(Patient).
 
+%%Advice predecate - if one or more severe symptom is reported
+advise_severe_symptoms(Patient)     :- has_severe_symptoms(Patient),
+                                    format(atom(Advice), '~w has severe symptoms and should consult a doctor immediately!', Patient),
+                                    (
+                                        write(Advice)
+                                    ).
+                            
+%%Advice predecate - if one or more mild symptom is reported
 advise_mild_symptoms(Patient)   :- has_mild_symptoms(Patient),
                                 format(atom(Advice), '~w has mild symptoms and can manage their symptoms at home', Patient),
                                 (
                                     write(Advice)
                                 ).
 
+%%Advice predecate - if no symptoms are reported
 advise_no_symptoms(Patient)   :- assess_risk(Patient), 
                                     format(atom(Advice), '~w does not present any symptoms but presents significant risk factors', Patient),
                                     (
                                         write(Advice)
                                     );
-                                format(atom(Advice), '~w does not present any symptoms', Patient),
+                                format(atom(Advice), '~w does not present any symptoms.', Patient),
                                 (
                                     write(Advice)
                                 ).
 
+%%Advice predecate - composition of the three specific advice predecates
 has_symptoms(Patient)           :-  advise_severe_symptoms(Patient);
                                 advise_mild_symptoms(Patient);
                                 advise_no_symptoms(Patient).
 
+%%Entrypoint predecate.
 advise_action(Patient)          :-  has_symptoms(Patient).
